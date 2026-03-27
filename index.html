@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User-Specific Image Grid</title>
+<style>
+  body { background: #111; color: #0f0; font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+  input, button { margin: 10px 0; padding: 8px; font-size: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; justify-content: center; margin-top: 20px; }
+  .grid-item { background: #fff; width: 150px; height: 150px; position: relative; overflow: hidden; border: 1px solid #0f0; border-radius: 8px; }
+  .grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+  .grid-item:hover img { transform: scale(1.1); }
+  .grid-item span { position: absolute; bottom: 24px; background: rgba(0,0,0,0.6); color: #0f0; width: 100%; font-size: 14px; }
+  .grid-item .actions { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-around; background: rgba(0,0,0,0.8); padding: 2px 0; }
+  .grid-item button { background: none; border: 1px solid #0f0; color: #0f0; font-size: 12px; padding: 2px 6px; cursor: pointer; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Upload Your Image</h1>
+<input type="file" id="imageInput" accept="image/*"><br>
+<input type="text" id="nameInput" placeholder="Enter Your Name"><br>
+<button onclick="uploadImage()">Upload</button>
+
+<div class="grid" id="imageGrid"></div>
+
+<script>
+// Assign a unique user ID if not already set
+let currentUser = localStorage.getItem('currentUser');
+if(!currentUser) {
+  currentUser = 'user-' + Date.now() + '-' + Math.floor(Math.random()*1000);
+  localStorage.setItem('currentUser', currentUser);
+}
+
+// Load images from localStorage
+let imagesData = JSON.parse(localStorage.getItem('images')) || [];
+
+window.onload = function() {
+  reloadGrid();
+}
+
+// Add image to grid
+function addImageToGrid(item, index) {
+  const grid = document.getElementById('imageGrid');
+  const div = document.createElement('div');
+  div.className = 'grid-item';
+  
+  let actionsHTML = '';
+  // Only allow Edit/Delete for the owner
+  if(item.userId === currentUser) {
+    actionsHTML = `
+      <div class="actions">
+        <button onclick="editImage(${index})">Edit</button>
+        <button onclick="deleteImage(${index})">Delete</button>
+      </div>
+    `;
+  }
+
+  div.innerHTML = `
+    <img src="${item.src}" alt="user image">
+    <span>${item.name}</span>
+    ${actionsHTML}
+  `;
+  grid.appendChild(div);
+}
+
+// Upload new image
+function uploadImage() {
+  const fileInput = document.getElementById('imageInput');
+  const nameInput = document.getElementById('nameInput');
+
+  if(fileInput.files.length === 0 || nameInput.value === '') {
+    alert("Please select image and enter your name!");
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const src = e.target.result;
+    const name = nameInput.value;
+
+    // Add to localStorage with user ID
+    imagesData.push({ src, name, userId: currentUser });
+    localStorage.setItem('images', JSON.stringify(imagesData));
+
+    reloadGrid();
+  }
+  reader.readAsDataURL(file);
+
+  fileInput.value = '';
+  nameInput.value = '';
+}
+
+// Edit image or name (only allowed for current user)
+function editImage(index) {
+  const item = imagesData[index];
+  if(item.userId !== currentUser) return;
+
+  const newName = prompt("Enter new name:", item.name);
+  if(newName !== null) item.name = newName;
+
+  const changeImage = confirm("Do you want to replace the image?");
+  if(changeImage) {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = function() {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagesData[index].src = e.target.result;
+        localStorage.setItem('images', JSON.stringify(imagesData));
+        reloadGrid();
+      }
+      reader.readAsDataURL(file);
+    }
+    fileInput.click();
+    return;
+  }
+
+  localStorage.setItem('images', JSON.stringify(imagesData));
+  reloadGrid();
+}
+
+// Delete image
+function deleteImage(index) {
+  const item = imagesData[index];
+  if(item.userId !== currentUser) return;
+
+  if(confirm("Are you sure you want to delete this image?")) {
+    imagesData.splice(index, 1);
+    localStorage.setItem('images', JSON.stringify(imagesData));
+    reloadGrid();
+  }
+}
+
+// Reload the grid
+function reloadGrid() {
+  const grid = document.getElementById('imageGrid');
+  grid.innerHTML = '';
+  imagesData.forEach((item, index) => addImageToGrid(item, index));
+}
+</script>
+
+</body>
+</html>
