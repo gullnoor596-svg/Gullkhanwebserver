@@ -3,85 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Public Shared Gallery</title>
+<title>GULL KHAN</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { background: #111; color: #0f0; font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-  input, button { margin: 10px 0; padding: 8px; font-size: 16px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; justify-content: center; margin-top: 20px; }
-  .grid-item { background: #fff; width: 150px; height: 150px; position: relative; overflow: hidden; border: 1px solid #0f0; border-radius: 8px; }
-  .grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-  .grid-item:hover img { transform: scale(1.1); }
-  .grid-item span { position: absolute; bottom: 0; background: rgba(0,0,0,0.6); color: #0f0; width: 100%; font-size: 14px; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+        font-family:'Montserrat',sans-serif;
+        overflow-x:hidden;
+        color:#fff;
+        scroll-behavior:smooth;
+        background:#0f0f1f;
+        position:relative;
+    }
+
+    /* PARTICLE BACKGROUND */
+    canvas#bgCanvas{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:0;
+    }
+
+    header{
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        text-align:center;
+        position:relative;
+        z-index:1;
+    }
+
+    .profile-img{
+        width:220px;
+        height:220px;
+        object-fit:cover;
+        margin-bottom:20px;
+        border-radius:50%;
+        border:3px solid #00ffff;
+        box-shadow:0 0 60px rgba(0,255,255,0.5), 0 0 100px rgba(0,255,255,0.2);
+        animation:float 4s ease-in-out infinite;
+        transition:transform 0.3s, box-shadow 0.3s;
+    }
+    .profile-img:hover{transform:scale(1.08);box-shadow:0 0 80px #00ffff,0 0 120px #00ffff40;}
+
+    @keyframes float{
+        0%,100%{transform:translateY(0);}
+        50%{transform:translateY(-20px);}
+    }
+
+    header h1{
+        font-size:4vw;
+        background:linear-gradient(90deg,#00ffff,#0080ff);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        animation:shine 4s infinite;
+        margin-bottom:10px;
+    }
+    header p{
+        font-size:1.5vw;
+        margin-top:10px;
+        color:#ccc;
+        text-shadow:0 0 10px rgba(0,255,255,0.5);
+    }
+    @keyframes shine{
+        0%,100%{background-position:0% 50%;}
+        50%{background-position:100% 50%;}
+    }
+
+    .btn{
+        background:linear-gradient(90deg,#0080ff,#00ffff);
+        padding:15px 35px;
+        border:none;
+        border-radius:50px;
+        color:#fff;
+        font-size:1.2vw;
+        cursor:pointer;
+        transition:0.3s;
+        margin-top:30px;
+        box-shadow:0 0 30px rgba(0,255,255,0.5);
+        animation:btnGlow 2s infinite alternate;
+    }
+    .btn:hover{
+        transform:scale(1.1);
+        box-shadow:0 0 60px #00ffff,0 0 90px #00ffff40;
+    }
+    @keyframes btnGlow{
+        0%{box-shadow:0 0 20px #00ffff;}
+        100%{box-shadow:0 0 50px #00ffff;}
+    }
+
+    section{
+        padding:100px 20px;
+        min-height:100vh;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        text-align:center;
+        position:relative;
+        z-index:1;
+    }
+    section h2{
+        font-size:3vw;
+        background:linear-gradient(90deg,#00ffff,#0080ff);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        margin-bottom:20px;
+    }
+    section p{
+        font-size:1.2vw;
+        max-width:900px;
+        line-height:1.6;
+        color:#ccc;
+    }
+
+    footer{
+        text-align:center;
+        padding:50px 20px;
+        background: rgba(0,0,0,0.5);
+        font-size:1vw;
+        color:#ccc;
+        border-top:1px solid rgba(255,255,255,0.1);
+    }
+
+    @media(max-width:768px){
+        header h1{font-size:8vw;}
+        header p{font-size:4vw;}
+        section h2{font-size:6vw;}
+        section p{font-size:3vw;}
+        .btn{font-size:4vw;padding:12px 25px;}
+        .profile-img{width:150px;height:150px;}
+    }
 </style>
 </head>
 <body>
 
-<h1>Public Shared Gallery</h1>
-<input type="file" id="imageInput" accept="image/*"><br>
-<input type="text" id="nameInput" placeholder="Enter Your Name"><br>
-<button onclick="uploadImage()">Upload</button>
+<canvas id="bgCanvas"></canvas>
 
-<div class="grid" id="imageGrid"></div>
+<header id="home">
+    <img src="https://raw.githubusercontent.com/gullnoor596-svg/Photo-load/refs/heads/main/1770988421959.jpg" alt="Profile Image" class="profile-img">
+    <h1>GULL KHAN</h1>
+    <p>Futuristic, Sleek, Stylish Dark Theme</p>
+    <button class="btn" onclick="scrollToSection('about')">Explore</button>
+</header>
 
-<!-- Firebase Libraries -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<section id="about">
+    <h2>About Me</h2>
+    <p>I create modern, muskal websites with dark, premium UIs, glowing effects, and smooth animations optimized for 8K screens.</p>
+</section>
+
+<section id="projects">
+    <h2>Projects</h2>
+    <p>Showcasing interactive projects with dark-themed visuals and glowing highlights.</p>
+    <button class="btn" onclick="scrollToSection('contact')">See Projects</button>
+</section>
+
+<section id="contact">
+    <h2>Contact Me</h2>
+    <p>Email: example@example.com | Phone: +123 456 7890</p>
+    <button class="btn" onclick="alert('Thank you for reaching out!')">Say Hello</button>
+</section>
+
+<footer>
+    &copy; 2026 GULL KHAN PATHAN. All rights reserved.
+</footer>
 
 <script>
-// 🔹 Initialize Firebase
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID",
-  databaseURL: "https://YOUR_PROJECT.firebaseio.com"
-};
+    function scrollToSection(id){
+        document.getElementById(id).scrollIntoView({behavior:'smooth'});
+    }
 
-firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
-const database = firebase.database();
-
-// 🔹 Upload Image Function
-function uploadImage() {
-  const fileInput = document.getElementById('imageInput');
-  const nameInput = document.getElementById('nameInput');
-
-  if(fileInput.files.length === 0 || nameInput.value.trim() === '') {
-    alert("Please select an image and enter your name!");
-    return;
-  }
-
-  const file = fileInput.files[0];
-  const storageRef = storage.ref('images/' + Date.now() + '_' + file.name);
-
-  storageRef.put(file).then(snapshot => {
-    snapshot.ref.getDownloadURL().then(url => {
-      database.ref('images').push({
-        name: nameInput.value,
-        url: url,
-        timestamp: Date.now()
-      });
-      fileInput.value = '';
-      nameInput.value = '';
+    // PARTICLE BACKGROUND
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    const particles = [];
+    for(let i=0;i<120;i++){
+        particles.push({
+            x: Math.random()*width,
+            y: Math.random()*height,
+            r: Math.random()*2+1,
+            dx: (Math.random()-0.5)*0.4,
+            dy: (Math.random()-0.5)*0.4
+        });
+    }
+    function animateParticles(){
+        ctx.clearRect(0,0,width,height);
+        particles.forEach(p=>{
+            p.x+=p.dx; p.y+=p.dy;
+            if(p.x<0) p.x=width; if(p.x>width) p.x=0;
+            if(p.y<0) p.y=height; if(p.y>height) p.y=0;
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(0,255,255,0.3)';
+            ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+    window.addEventListener('resize',()=>{
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
     });
-  });
-}
-
-// 🔹 Display All Images in Real-Time
-database.ref('images').on('value', snapshot => {
-  const gallery = document.getElementById('imageGrid');
-  gallery.innerHTML = '';
-  snapshot.forEach(child => {
-    const data = child.val();
-    const div = document.createElement('div');
-    div.className = 'grid-item';
-    div.innerHTML = `<img src="${data.url}" alt="image"><span>${data.name}</span>`;
-    gallery.appendChild(div);
-  });
-});
 </script>
 
 </body>
