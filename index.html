@@ -2,304 +2,97 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GULL KHAN</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<title>APK Style Dialog</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-    font-family:'Montserrat',sans-serif;
-    overflow-x:hidden;
-    color:#fff;
-    scroll-behavior:smooth;
-    background:#0f0f1f;
-    position:relative;
-}
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #000;
+        margin: 0;
+    }
 
-/* PARTICLE BACKGROUND */
-canvas#bgCanvas{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    z-index:0;
-}
+    .dialog {
+        background: #fff;
+        border-radius: 20px;
+        width: 350px;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        text-align: center;
+        position: relative;
+        transition: all 0.3s ease;
+    }
 
-header{
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    position:relative;
-    z-index:1;
-}
+    .dialog h2 {
+        color: #6a00ff;
+        margin: 0 0 10px 0;
+    }
 
-.profile-img{
-    width:220px;
-    height:220px;
-    object-fit:cover;
-    margin-bottom:20px;
-    border-radius:50%;
-    border:3px solid #00ffff;
-    box-shadow:0 0 60px rgba(0,255,255,0.5), 0 0 100px rgba(0,255,255,0.2);
-    animation:float 4s ease-in-out infinite;
-    transition:transform 0.3s, box-shadow 0.3s;
-}
-.profile-img:hover{
-    transform:scale(1.12);
-    box-shadow:0 0 100px #00ffff,0 0 150px #00ffff40,0 0 200px #00ffff20;
-}
+    .dialog p {
+        color: #333;
+        font-size: 14px;
+        margin: 5px 0;
+    }
 
-@keyframes float{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-20px);}
-}
+    .dialog .highlight {
+        color: #00d1c1;
+    }
 
-header h1{
-    font-size:4vw;
-    background:linear-gradient(90deg,#00ffff,#0080ff);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    animation:shine 4s infinite;
-    margin-bottom:10px;
-}
-header p{
-    font-size:1.5vw;
-    margin-top:10px;
-    color:#ccc;
-    text-shadow:0 0 10px rgba(0,255,255,0.5);
-}
-@keyframes shine{
-    0%,100%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-}
+    .dialog-buttons {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+    }
 
-.btn{
-    background:linear-gradient(90deg,#0080ff,#00ffff);
-    padding:15px 35px;
-    border:none;
-    border-radius:50px;
-    color:#fff;
-    font-size:1.2vw;
-    cursor:pointer;
-    transition:0.3s;
-    margin-top:30px;
-    box-shadow:0 0 30px rgba(0,255,255,0.5);
-    animation:btnGlow 2s infinite alternate;
-}
-.btn:hover{
-    transform:scale(1.1);
-    box-shadow:0 0 60px #00ffff,0 0 90px #00ffff40;
-}
-@keyframes btnGlow{
-    0%{box-shadow:0 0 20px #00ffff,0 0 30px #00ffff50;}
-    50%{box-shadow:0 0 50px #00ffff,0 0 80px #00ffff50;}
-    100%{box-shadow:0 0 20px #00ffff,0 0 30px #00ffff50;}
-}
+    .btn {
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
 
-.music-btn{
-    position:fixed;
-    bottom:30px;
-    right:30px;
-    font-size:1.5vw;
-    padding:12px 20px;
-    border:none;
-    border-radius:50px;
-    background:linear-gradient(90deg,#00ffff,#0080ff);
-    color:#fff;
-    cursor:pointer;
-    box-shadow:0 0 30px rgba(0,255,255,0.5);
-    animation:btnGlow 2s infinite alternate;
-    z-index:10;
-    transition:0.3s;
-}
-.music-btn:hover{
-    transform:scale(1.1);
-    box-shadow:0 0 60px #00ffff,0 0 90px #00ffff40;
-}
+    .btn-join {
+        background-color: #6a00ff;
+        color: #fff;
+    }
 
-section{
-    padding:100px 20px;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    position:relative;
-    z-index:1;
-}
-section h2{
-    font-size:3vw;
-    background:linear-gradient(90deg,#00ffff,#0080ff);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    margin-bottom:20px;
-}
-section p{
-    font-size:1.2vw;
-    max-width:900px;
-    line-height:1.6;
-    color:#ccc;
-}
+    .btn-join:hover {
+        background-color: #5800cc;
+    }
 
-footer{
-    text-align:center;
-    padding:50px 20px;
-    background: rgba(0,0,0,0.5);
-    font-size:1vw;
-    color:#ccc;
-    border-top:1px solid rgba(255,255,255,0.1);
-}
+    .btn-cancel {
+        background-color: #444;
+        color: #fff;
+    }
 
-@media(max-width:768px){
-    header h1{font-size:8vw;}
-    header p{font-size:4vw;}
-    section h2{font-size:6vw;}
-    section p{font-size:3vw;}
-    .btn{font-size:4vw;padding:12px 25px;}
-    .profile-img{width:150px;height:150px;}
-    .music-btn{font-size:4vw;padding:10px 18px;}
-}
+    .btn-cancel:hover {
+        background-color: #222;
+    }
 </style>
 </head>
 <body>
 
-<canvas id="bgCanvas"></canvas>
-
-<header id="home">
-    <img src="https://raw.githubusercontent.com/gullnoor596-svg/Photo-load/refs/heads/main/file_0000000089547208b2396f7b13664d40.png" alt="Profile Image" class="profile-img">
-    <h1>GULL KHAN</h1>
-    <p>Futuristic, Sleek, Stylish Dark Theme</p>
-    <button class="btn" onclick="scrollToSection('about')">Explore</button>
-</header>
-
-<section id="about">
-    <h2>About Me</h2>
-    <p>I create modern, muskal websites with dark, premium UIs, glowing effects, and smooth animations optimized for 8K screens.</p>
-</section>
-
-<section id="projects">
-    <h2>Projects</h2>
-    <p>Showcasing interactive projects with dark-themed visuals and glowing highlights.</p>
-    <button class="btn" onclick="scrollToSection('contact')">See Projects</button>
-</section>
-
-<section id="contact">
-    <h2>Contact Me</h2>
-    <p>Email: example@example.com | Phone: +123 456 7890</p>
-    <button class="btn" onclick="alert('Thank you for reaching out!')">Say Hello</button>
-</section>
-
-<footer>
-    &copy; 2026 GULL KHAN PATHAN. All rights reserved.
-</footer>
-
-<!-- Background Music -->
-<audio id="bgMusic" loop>
-    <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
-</audio>
-
-<!-- Music Toggle Button -->
-<button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
+<div class="dialog" id="apkDialog">
+    <h2>MODDED BY DPMods</h2>
+    <p class="highlight">Join Telegram for more updates</p>
+    <p>Thanks For Downloading This Mod<br>if you like it subscribe me on YouTube also 👍</p>
+    
+    <div class="dialog-buttons">
+        <button class="btn btn-join" onclick="window.open('https://t.me/yourchannel', '_blank')">JOIN TELEGRAM</button>
+        <button class="btn btn-cancel" onclick="closeDialog()">CANCEL</button>
+    </div>
+</div>
 
 <script>
-function scrollToSection(id){
-    const element = document.getElementById(id);
-    const offset = -50;
-    const top = element.getBoundingClientRect().top + window.pageYOffset + offset;
-    window.scrollTo({ top, behavior: 'smooth' });
+function closeDialog() {
+    const dialog = document.getElementById('apkDialog');
+    dialog.style.display = 'none'; // Hide the dialog
 }
-
-function toggleMusic(){
-    const music = document.getElementById('bgMusic');
-    if(music.paused){
-        music.play();
-    } else {
-        music.pause();
-    }
-}
-
-// PROFILE IMAGE SLIDESHOW
-const profileImages = [
-    "https://raw.githubusercontent.com/gullnoor596-svg/Photo-load/refs/heads/main/file_0000000089547208b2396f7b13664d40.png",
-    "https://raw.githubusercontent.com/gullnoor596-svg/Photo-load/refs/heads/main/20260327_114442.png",
-    "https://raw.githubusercontent.com/gullnoor596-svg/Photo-load/refs/heads/main/20260327_114602.png",
-    "https://raw.githubusercontent.com/gullnoor596-svg/Photo-load/refs/heads/main/20260327_114641.png"
-];
-
-let currentImageIndex = 0;
-const profileImg = document.querySelector('.profile-img');
-
-setInterval(() => {
-    currentImageIndex++;
-    if(currentImageIndex >= profileImages.length) currentImageIndex = 0;
-    profileImg.src = profileImages[currentImageIndex];
-}, 4000); // 4000ms = 4 seconds
-
-// AUTO START MUSIC ON PAGE LOAD
-window.addEventListener('load', () => {
-    const music = document.getElementById('bgMusic');
-    const playPromise = music.play();
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {}).catch(error => {
-            document.body.addEventListener('click', () => music.play(), {once:true});
-        });
-    }
-});
-
-// PARTICLE BACKGROUND
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
-let width = canvas.width = window.innerWidth;
-let height = canvas.height = window.innerHeight;
-const particles = [];
-for(let i=0;i<120;i++){
-    particles.push({
-        x: Math.random()*width,
-        y: Math.random()*height,
-        r: Math.random()*2+1,
-        dx: (Math.random()-0.5)*0.4,
-        dy: (Math.random()-0.5)*0.4
-    });
-}
-function animateParticles(){
-    ctx.clearRect(0,0,width,height);
-    for(let i=0;i<particles.length;i++){
-        let p = particles[i];
-        p.x += p.dx; p.y += p.dy;
-        if(p.x<0) p.x=width; if(p.x>width) p.x=0;
-        if(p.y<0) p.y=height; if(p.y>height) p.y=0;
-
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle='rgba(0,255,255,0.3)';
-        ctx.fill();
-
-        for(let j=i+1;j<particles.length;j++){
-            let p2 = particles[j];
-            let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-            if(dist < 100){
-                ctx.beginPath();
-                ctx.moveTo(p.x,p.y);
-                ctx.lineTo(p2.x,p2.y);
-                ctx.strokeStyle = `rgba(0,255,255,${1-dist/100})`;
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-            }
-        }
-    }
-    requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-window.addEventListener('resize',()=>{
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-});
 </script>
 
 </body>
