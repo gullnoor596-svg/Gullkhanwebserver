@@ -138,22 +138,30 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
 }
 @keyframes slide{from{left:-100%}to{left:100%}}
 
-/* DOWNLOAD BUTTONS */
+/* DOWNLOAD BUTTONS - UPDATED */
 .download {
     display: block;
-    margin: 6px;
-    padding: 10px;
-    border-radius: 8px;
+    margin: 15px auto;
+    padding: 18px 30px;
+    border-radius: 12px;
     text-decoration: none;
     font-weight: bold;
+    font-size: 30px;
+    text-align:center;
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     color:#fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.download.hd{background: linear-gradient(90deg,#00ff88,#00cc55);}
-.download.sd{background: linear-gradient(90deg,#00ccff,#0066ff);}
+.download.hd {
+    background: linear-gradient(90deg,#00ff88,#00cc55);
+}
+.download.sd {
+    background: linear-gradient(90deg,#00ccff,#0066ff);
+    font-size: 30px; /* SD button text bigger */
+}
 .download:active{transform:scale(0.95);}
 
 /* Ripple effect */
