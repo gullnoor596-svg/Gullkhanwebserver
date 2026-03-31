@@ -19,7 +19,7 @@ body{
     top:0;
     left:0;
     width:0;
-    height:30%;
+    height:40%;
     background:rgba(0,0,0,0.8);
     backdrop-filter:blur(12px);
     overflow:hidden;
@@ -30,14 +30,14 @@ body{
     justify-content:center;
     gap:15px;
     padding-left:0px;
-    border-radius:0 25px 25px 0;
+    border-radius:0 25px 300px 0;
 }
 .drawer::before{
     content:"";
     position:absolute;
     inset:0;
     padding:3px;
-    border-radius:0 25px 25px 0;
+    border-radius:0 25px 500px 0;
     background:linear-gradient(270deg,#00ff88,#00ccff,#ff00ff,#00ff88);
     background-size:600% 600%;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -50,8 +50,8 @@ body{
     100%{background-position:200%}
 }
 .drawer a{
-    padding:12px;
-    font-size:22px;
+    padding:15px;
+    font-size:30px;
     color:#00ff88;
     text-decoration:none;
     display:block;
@@ -66,7 +66,7 @@ body{
     position:absolute;
     right:15px;
     top:10px;
-    font-size:30px;
+    font-size:100px;
     cursor:pointer;
     z-index:1003;
 }
@@ -76,7 +76,7 @@ body{
     position:fixed;
     top:15px;
     left:15px;
-    font-size:30px;
+    font-size:40px;
     background:linear-gradient(45deg,#00ff88,#00ccff);
     border:none;
     padding:10px;
@@ -86,7 +86,7 @@ body{
 }
 
 /* TITLE */
-h1{text-align:center;font-size:50px;margin-top:80px;}
+h1{text-align:center;font-size:80px;margin-top:80px;}
 .rainbow-text{
     font-weight:bold;
     background:linear-gradient(90deg,red,magenta,blue,cyan,green,yellow,red);
@@ -100,10 +100,10 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
 /* SEARCH BAR */
 .search-container{text-align:center;margin:20px;}
 .search-container input{
-    width:60%;
+    width:600%;
     max-width:700px;
-    padding:15px;
-    font-size:20px;
+    padding:35px;
+    font-size:35px;
     border-radius:15px;
     border:none;
     background:#222;
@@ -113,7 +113,7 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
 /* MOVIE GRID */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:20px;
     padding:20px;
 }
@@ -126,8 +126,28 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
     text-align:center;
     transition:0.3s;
     position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
 }
-.movie img{width:100%;height:750px;object-fit:cover;}
+.movie img{
+    width:100%;
+    height:450px;
+    object-fit:cover;
+}
+
+/* Movie Title Styling */
+.movie h3 {
+    font-size:30px;
+    font-weight:bold;
+    color:#00ff88;
+    margin:12px 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+/* Card touch effect */
 .movie.active-touch::after{
     content:"";
     position:absolute;
@@ -138,15 +158,15 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
 }
 @keyframes slide{from{left:-100%}to{left:100%}}
 
-/* DOWNLOAD BUTTONS - UPDATED */
+/* DOWNLOAD BUTTONS */
 .download {
     display: block;
-    margin: 15px auto;
-    padding: 18px 30px;
-    border-radius: 12px;
+    margin: 8px auto 15px auto;
+    padding: 10px 45px;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 25px;
     text-align:center;
     position: relative;
     overflow: hidden;
@@ -155,13 +175,8 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
     color:#fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.download.hd {
-    background: linear-gradient(90deg,#00ff88,#00cc55);
-}
-.download.sd {
-    background: linear-gradient(90deg,#00ccff,#0066ff);
-    font-size: 30px; /* SD button text bigger */
-}
+.download.hd {background: linear-gradient(90deg,#00ff88,#00cc55);}
+.download.sd {background: linear-gradient(90deg,#00ccff,#0066ff);}
 .download:active{transform:scale(0.95);}
 
 /* Ripple effect */
@@ -173,13 +188,12 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
     pointer-events:none;
     opacity:0.5;
 }
-@keyframes ripple-effect{
-    to{transform:scale(6);opacity:0;}
-}
+@keyframes ripple-effect{to{transform:scale(6);opacity:0;}}
 
 /* FADE-IN */
 .fadeIn{opacity:0;transform:translateY(20px);animation:fadeUp 0.6s forwards;}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+
 </style>
 </head>
 <body>
@@ -187,14 +201,33 @@ h1{text-align:center;font-size:50px;margin-top:80px;}
 <!-- DRAWER -->
 <div id="myDrawer" class="drawer">
     <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-    <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="https://www.facebook.com/share/1BTtkqEN28/" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
     <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-    <a href="https://www.tiktok.com/@YourProfile" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+    <a href="https://whatsapp.com/channel/0029VbCbSoPCMY0JBsgwbx2q" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    <a href="https://www.tiktok.com/@pathanwala1?_r=1&_t=ZS-959EeyqQEza" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
     <a href="#" onclick="shareWebsite()"><i class="fas fa-share-alt"></i> Share</a>
     <span class="closebtn" onclick="closeDrawer()">×</span>
 </div>
 
 <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
+
+<!-- MUSIC TOGGLE -->
+<button id="musicToggle" style="
+    position:fixed;
+    top:20px;
+    right:20px;
+    font-size:30px;
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(45deg,#ff00ff,#ff88ff);
+    color:#fff;
+    cursor:pointer;
+    z-index:2000;
+">🎵 Play</button>
+<audio id="bgMusic" loop>
+    <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
+</audio>
 
 <h1><span class="rainbow-text">𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕</span></h1>
 
@@ -212,7 +245,7 @@ function closeDrawer(){document.getElementById("myDrawer").style.width="0";}
 // Share
 function shareWebsite(){
     const url = "https://gullnoor596-svg.github.io/MoviesServer/";
-    if(navigator.share){navigator.share({title:"GULLKHAN WEB",text:"Check this website!",url:url});}
+    if(navigator.share){navigator.share({title:"GULLKHAN WEBSITE",text:"Check this website!",url:url});}
     else if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>alert("Link copied!"));}
     else{prompt("Copy this link:",url);}
 }
@@ -221,10 +254,11 @@ function shareWebsite(){
 let movies=[
     {name:"V for Vendetta", img:"https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_.jpg", link1:"https://hub.pizzacdn.buzz/f047ce7a424bb2de20b07e685d6cf3ed?token=1774952598123", link2:"https://pixeldrain.dev/u/XJcPnuBR"},
     {name:"The Green Mile", img:"https://mp4moviez.football/cover/the-green-mile-(1999)-hindi-dubbed-movie.jpg", link1:"https://video-downloads.googleusercontent.com/ADGPM2kFELWWWAT9h-PY-HDdbNathD654csqHByPODaYwJSS3H_gW6Opuqwp2OEgzuIWLSYNTYjj9LqpyLEwOp3ZwNJM4HhUtCVkpFtCChf7DNdn8zC-thBqvgzNvLZcnhWiiJC8brl1tHORk0j1MW4m0i4qpJK7i_34kXQMjgorGpIVfhTNptI_GNaTrgOYK3EVs0avWUUWAxnRzM5xq3ft94oQWDfozOAel-qS5LsEA8Ex7w6POGs", link2:"https://drive.google.com/file/d/1s5L4J-_oShZZGP0lhTgIz-mKJT23K0p0/view?pli=1"},
-    {name:"Hollywood 3", img:"https://www.filmyzilla34.com/site_uploads/duplicate/thumb_Ip-man-and-four-kings-(2021)-hindi-dubbed.jpg", link1:"videos/hollywood3_hd.mp4", link2:"videos/hollywood3_sd.mp4"}
+    {name:"The Spiderwick Chronicles", img:"https://images.justwatch.com/poster/183682366/s718/the-spiderwick-chronicles.jpg", link1:"https://jio1.fastxmp4.com/download/22291/The-Spiderwick-Chronicles-(2008)-Hindi-Dubbed-BluRay--720p-[Orgmovies].mp4?st=nVtysLhNcZtT-rPCdN4s4w&e=1775060618", link2:"https://111.90.159.132/family/the-spiderwick-chronicles-12122023/"}
 ];
-for(let i=4;i<=20;i++){
-    movies.push({name:"Hollywood "+i,img:"https://via.placeholder.com/300x400",link1:`videos/hollywood${i}_hd.mp4`,link2:`videos/hollywood${i}_sd.mp4`});
+
+for(let i=4;i<=15;i++){
+    movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`videos/hollywood${i}_hd.mp4`,link2:`videos/hollywood${i}_sd.mp4`});
 }
 
 let grid=document.getElementById("movieGrid");
@@ -236,16 +270,13 @@ function loadMovies(list){
         box.innerHTML=`
             <img src="${m.img}" alt="${m.name}">
             <h3>${m.name}</h3>
-            <a class="download hd" href="${m.link1}" target="_blank">Download SD</a>
-            <a class="download sd" href="${m.link2}" target="_blank">Download HD</a>
+            <a class="download hd" href="${m.link1}" target="_blank">Download HD</a>
+            <a class="download sd" href="${m.link2}" target="_blank">Download SD</a>
         `;
         grid.appendChild(box);
 
-        // Card touch effect, ONLY if NOT clicking a download button
         box.addEventListener("touchstart", e=>{
-            if(!e.target.classList.contains('download')){
-                box.classList.add("active-touch");
-            }
+            if(!e.target.classList.contains('download')) box.classList.add("active-touch");
         });
         box.addEventListener("touchend",()=>setTimeout(()=>box.classList.remove("active-touch"),300));
     });
@@ -261,7 +292,7 @@ document.getElementById("searchInput").addEventListener("input",(e)=>{
 // Ripple effect for Download buttons
 document.addEventListener('click', function(e){
     if(e.target.classList.contains('download')){
-        e.stopPropagation(); // STOP event from triggering card touch effect
+        e.stopPropagation();
         const btn = e.target;
         const ripple = document.createElement('span');
         ripple.className='ripple';
@@ -276,6 +307,22 @@ document.addEventListener('click', function(e){
         btn.appendChild(ripple);
         ripple.addEventListener('animationend', ()=>ripple.remove());
     }
+});
+
+// MUSIC TOGGLE
+const musicBtn = document.getElementById('musicToggle');
+const music = document.getElementById('bgMusic');
+let isPlaying = false;
+
+musicBtn.addEventListener('click', ()=>{
+    if(isPlaying){
+        music.pause();
+        musicBtn.innerHTML = "🎵 Play";
+    } else {
+        music.play();
+        musicBtn.innerHTML = "🔊 Pause";
+    }
+    isPlaying = !isPlaying;
 });
 </script>
 </body>
