@@ -13,8 +13,6 @@
     --search-bg: #222;
     --download-hd: linear-gradient(90deg,#00ff88,#00cc55);
     --download-sd: linear-gradient(90deg,#00ccff,#0066ff);
-    --rainbow-start: red;
-    --rainbow-end: red;
 }
 
 /* ===== BODY ===== */
@@ -27,13 +25,13 @@ body{
     transition: background 0.7s ease, color 0.7s ease;
 }
 
-/* DRAWER */
+/* DRAWER - original rainbow/frosted style */
 .drawer{
     position:fixed;
     top:0;
     left:0;
     width:0;
-    height:40%;
+    height:45%;
     background:rgba(0,0,0,0.8);
     backdrop-filter:blur(12px);
     overflow:hidden;
@@ -71,6 +69,7 @@ body{
     display:block;
     transition:0.5s;
     z-index:1002;
+    border-radius:10px;
 }
 .drawer a:hover{
     background:rgba(0,255,136,0.2);
@@ -103,18 +102,13 @@ body{
 h1{text-align:center;font-size:80px;margin-top:80px;}
 .rainbow-text{
     font-weight:bold;
-    background:linear-gradient(90deg,var(--rainbow-start),magenta,blue,cyan,green,yellow,var(--rainbow-end));
+    background:linear-gradient(90deg,red,magenta,blue,cyan,green,yellow,red);
     background-size:200%;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
     animation:shimmer 3s linear infinite;
 }
 @keyframes shimmer{0%{background-position:100%}100%{background-position:-100%}}
-
-/* Smooth transitions for page elements */
-body, .movie, h1, .search-container input, .download {
-    transition: background 0.7s ease, color 0.7s ease, box-shadow 0.7s ease;
-}
 
 /* SEARCH BAR */
 .search-container{text-align:center;margin:20px;}
@@ -154,15 +148,12 @@ body, .movie, h1, .search-container input, .download {
     height:450px;
     object-fit:cover;
 }
-
-/* Movie Title Styling */
 .movie h3 {
     font-size:30px;
     font-weight:bold;
     color: var(--highlight-color);
     margin:12px 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    word-wrap: break-word;
 }
 
 /* Card touch effect */
@@ -212,62 +203,33 @@ body, .movie, h1, .search-container input, .download {
 .fadeIn{opacity:0;transform:translateY(20px);animation:fadeUp 0.6s forwards;}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
 
-/* MUSIC & NIGHT BUTTONS */
-#musicToggle, #nightToggle {
-    width: 80px; height: 80px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 20px; font-size: 40px; cursor: pointer;
-    position: fixed; right: 20px; z-index: 2000;
-    transition: all 0.4s ease;
-}
-#musicToggle { top: 20px; background: linear-gradient(45deg,#ff00ff,#ff88ff);}
-#nightToggle { top: 120px; background: linear-gradient(45deg,#888,#ccc); color:#111;}
-#nightToggle i { transition: transform 0.5s ease, font-size 0.5s ease; }
-
-/* Glow hover */
-#nightToggle:hover {
-    box-shadow: 0 0 20px 5px #fff8, 0 0 40px 10px #ff0a, 0 0 60px 15px #0ff;
-    transform: scale(1.1);
-}
-#musicToggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px 5px #ff00ffaa, 0 0 25px 10px #ff88ffaa;
-}
-
-/* NIGHT & MUSIC PULSE EFFECT */
-#nightToggle.active, #musicToggle.active {
-    animation: pulse 0.6s ease;
-}
-@keyframes pulse{
-    0%{transform:scale(1)}
-    50%{transform:scale(1.2)}
-    100%{transform:scale(1)}
-}
 </style>
 </head>
 <body>
 
 <!-- DRAWER -->
 <div id="myDrawer" class="drawer">
+    <a href="javascript:void(0)" id="drawerNightToggle"><i id="drawerToggleIcon">🌙</i> Night Mode</a>
     <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
     <a href="https://www.facebook.com/share/1BTtkqEN28/" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
     <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
     <a href="https://whatsapp.com/channel/0029VbCbSoPCMY0JBsgwbx2q" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     <a href="https://www.tiktok.com/@pathanwala1?_r=1&_t=ZS-959EeyqQEza" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
     <a href="#" onclick="shareWebsite()"><i class="fas fa-share-alt"></i> Share</a>
+
+    <!-- MUSIC & NIGHT MODE INSIDE DRAWER -->
+    <a href="javascript:void(0)" id="drawerMusicToggle"><i class="fas fa-music"></i> Music</a>
+
+
     <span class="closebtn" onclick="closeDrawer()">×</span>
 </div>
 
 <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
 
-<!-- MUSIC TOGGLE -->
-<button id="musicToggle">🎵</button>
+<!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
     <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
 </audio>
-
-<!-- NIGHT MODE TOGGLE -->
-<button id="nightToggle"><i id="toggleIcon">🌙</i></button>
 
 <h1><span class="rainbow-text">𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕</span></h1>
 
@@ -292,12 +254,12 @@ function shareWebsite(){
 
 // Movies
 let movies=[
-    {name:"V for Vendetta", img:"https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_.jpg", link1:"https://hub.pizzacdn.buzz/f047ce7a424bb2de20b07e685d6cf3ed?token=1774952598123", link2:"https://pixeldrain.dev/u/XJcPnuBR"},
-    {name:"The Green Mile", img:"https://mp4moviez.football/cover/the-green-mile-(1999)-hindi-dubbed-movie.jpg", link1:"https://video-downloads.googleusercontent.com/ADGPM2kFELWWWAT9h-PY-HDdbNathD654csqHByPODaYwJSS3H_gW6Opuqwp2OEgzuIWLSYNTYjj9LqpyLEwOp3ZwNJM4HhUtCVkpFtCChf7DNdn8zC-thBqvgzNvLZcnhWiiJC8brl1tHORk0j1MW4m0i4qpJK7i_34kXQMjgorGpIVfhTNptI_GNaTrgOYK3EVs0avWUUWAxnRzM5xq3ft94oQWDfozOAel-qS5LsEA8Ex7w6POGs", link2:"https://drive.google.com/file/d/1s5L4J-_oShZZGP0lhTgIz-mKJT23K0p0/view?pli=1"},
-    {name:"The Spiderwick Chronicles", img:"https://images.justwatch.com/poster/183682366/s718/the-spiderwick-chronicles.jpg", link1:"https://jio1.fastxmp4.com/download/22291/The-Spiderwick-Chronicles-(2008)-Hindi-Dubbed-BluRay--720p-[Orgmovies].mp4?st=nVtysLhNcZtT-rPCdN4s4w&e=1775060618", link2:"https://111.90.159.132/family/the-spiderwick-chronicles-12122023/"}
+    {name:"V for Vendetta", img:"https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_.jpg", link1:"#", link2:"#"},
+    {name:"The Green Mile", img:"https://mp4moviez.football/cover/the-green-mile-(1999)-hindi-dubbed-movie.jpg", link1:"#", link2:"#"},
+    {name:"The Spiderwick Chronicles", img:"https://images.justwatch.com/poster/183682366/s718/the-spiderwick-chronicles.jpg", link1:"#", link2:"#"}
 ];
 for(let i=4;i<=15;i++){
-    movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`videos/hollywood${i}_hd.mp4`,link2:`videos/hollywood${i}_sd.mp4`});
+    movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`#`,link2:`#`});
 }
 let grid=document.getElementById("movieGrid");
 function loadMovies(list){
@@ -348,28 +310,21 @@ document.addEventListener('click', function(e){
 });
 
 // MUSIC TOGGLE
-const musicBtn = document.getElementById('musicToggle');
+const musicBtn = document.getElementById('drawerMusicToggle');
 const music = document.getElementById('bgMusic');
 let isPlaying = false;
 musicBtn.addEventListener('click', ()=>{
     isPlaying ? music.pause() : music.play();
-    musicBtn.textContent = isPlaying ? '🎵' : '🔊';
+    musicBtn.innerHTML = isPlaying ? '<i class="fas fa-music"></i> Music' : '<i class="fas fa-volume-up"></i> Playing';
     isPlaying = !isPlaying;
-    musicBtn.classList.add('active');
-    setTimeout(()=>musicBtn.classList.remove('active'),600);
 });
 
-// NIGHT MODE PERSISTENCE
-const nightBtn = document.getElementById('nightToggle');
-const toggleIcon = document.getElementById('toggleIcon');
-
-// Load saved night mode from localStorage
+// NIGHT MODE TOGGLE
+const nightBtn = document.getElementById('drawerNightToggle');
+const toggleIcon = document.getElementById('drawerToggleIcon');
 let nightMode = localStorage.getItem('nightMode')==='false'? false : true;
 
 function applyMode(night){
-    nightBtn.classList.add('active');
-    setTimeout(()=> nightBtn.classList.remove('active'), 600);
-
     if(!night){
         document.documentElement.style.setProperty('--bg-color','#fff');
         document.documentElement.style.setProperty('--text-color','#111');
@@ -385,12 +340,9 @@ function applyMode(night){
         document.documentElement.style.setProperty('--search-bg','#222');
         toggleIcon.textContent='🌙';
     }
-
     localStorage.setItem('nightMode', night);
 }
-
 applyMode(nightMode);
-
 nightBtn.addEventListener('click', ()=>{
     nightMode = !nightMode;
     applyMode(nightMode);
