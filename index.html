@@ -5,12 +5,26 @@
 <title>𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕 𝗦𝗘𝗥𝗩𝗘𝗥</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
+:root {
+    --bg-color: #111;
+    --text-color: #fff;
+    --card-bg: rgba(255,255,255,0.05);
+    --highlight-color: #00ff88;
+    --search-bg: #222;
+    --download-hd: linear-gradient(90deg,#00ff88,#00cc55);
+    --download-sd: linear-gradient(90deg,#00ccff,#0066ff);
+    --rainbow-start: red;
+    --rainbow-end: red;
+}
+
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
-    background:#111;
-    color:#fff;
+    background: var(--bg-color);
+    color: var(--text-color);
     overflow-x:hidden;
+    transition: background 0.7s ease, color 0.7s ease;
 }
 
 /* DRAWER */
@@ -52,10 +66,10 @@ body{
 .drawer a{
     padding:15px;
     font-size:30px;
-    color:#00ff88;
+    color: var(--highlight-color);
     text-decoration:none;
     display:block;
-    transition:0.3s;
+    transition:0.5s;
     z-index:1002;
 }
 .drawer a:hover{
@@ -89,13 +103,18 @@ body{
 h1{text-align:center;font-size:80px;margin-top:80px;}
 .rainbow-text{
     font-weight:bold;
-    background:linear-gradient(90deg,red,magenta,blue,cyan,green,yellow,red);
+    background:linear-gradient(90deg,var(--rainbow-start),magenta,blue,cyan,green,yellow,var(--rainbow-end));
     background-size:200%;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
     animation:shimmer 3s linear infinite;
 }
 @keyframes shimmer{0%{background-position:100%}100%{background-position:-100%}}
+
+/* Smooth transitions for page elements */
+body, .movie, h1, .search-container input, .download {
+    transition: background 0.7s ease, color 0.7s ease, box-shadow 0.7s ease;
+}
 
 /* SEARCH BAR */
 .search-container{text-align:center;margin:20px;}
@@ -106,8 +125,8 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     font-size:35px;
     border-radius:15px;
     border:none;
-    background:#222;
-    color:#fff;
+    background: var(--search-bg);
+    color: var(--text-color);
 }
 
 /* MOVIE GRID */
@@ -120,11 +139,11 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 
 /* MOVIE CARD */
 .movie{
-    background:rgba(255,255,255,0.05);
+    background: var(--card-bg);
     border-radius:15px;
     overflow:hidden;
     text-align:center;
-    transition:0.3s;
+    transition:0.7s;
     position:relative;
     display:flex;
     flex-direction:column;
@@ -140,10 +159,9 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 .movie h3 {
     font-size:30px;
     font-weight:bold;
-    color:#00ff88;
+    color: var(--highlight-color);
     margin:12px 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    white-space: normal;
     word-wrap: break-word;
 }
 
@@ -171,12 +189,12 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.7s ease, background 0.7s ease, color 0.7s ease;
     color:#fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.download.hd {background: linear-gradient(90deg,#00ff88,#00cc55);}
-.download.sd {background: linear-gradient(90deg,#00ccff,#0066ff);}
+.download.hd {background: var(--download-hd);}
+.download.sd {background: var(--download-sd);}
 .download:active{transform:scale(0.95);}
 
 /* Ripple effect */
@@ -194,6 +212,37 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 .fadeIn{opacity:0;transform:translateY(20px);animation:fadeUp 0.6s forwards;}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
 
+/* MUSIC & NIGHT BUTTONS */
+#musicToggle, #nightToggle {
+    width: 80px; height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 20px; font-size: 40px; cursor: pointer;
+    position: fixed; right: 20px; z-index: 2000;
+    transition: all 0.4s ease;
+}
+#musicToggle { top: 20px; background: linear-gradient(45deg,#ff00ff,#ff88ff);}
+#nightToggle { top: 120px; background: linear-gradient(45deg,#888,#ccc); color:#111;}
+#nightToggle i { transition: transform 0.5s ease, font-size 0.5s ease; }
+
+/* Glow hover */
+#nightToggle:hover {
+    box-shadow: 0 0 20px 5px #fff8, 0 0 40px 10px #ff0a, 0 0 60px 15px #0ff;
+    transform: scale(1.1);
+}
+#musicToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px 5px #ff00ffaa, 0 0 25px 10px #ff88ffaa;
+}
+
+/* NIGHT & MUSIC PULSE EFFECT */
+#nightToggle.active, #musicToggle.active {
+    animation: pulse 0.6s ease;
+}
+@keyframes pulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.2)}
+    100%{transform:scale(1)}
+}
 </style>
 </head>
 <body>
@@ -212,22 +261,13 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
 
 <!-- MUSIC TOGGLE -->
-<button id="musicToggle" style="
-    position:fixed;
-    top:20px;
-    right:20px;
-    font-size:30px;
-    padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    background:linear-gradient(45deg,#ff00ff,#ff88ff);
-    color:#fff;
-    cursor:pointer;
-    z-index:2000;
-">🎵 Play</button>
+<button id="musicToggle">🎵</button>
 <audio id="bgMusic" loop>
     <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
 </audio>
+
+<!-- NIGHT MODE TOGGLE -->
+<button id="nightToggle"><i id="toggleIcon">🌙</i></button>
 
 <h1><span class="rainbow-text">𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕</span></h1>
 
@@ -256,11 +296,9 @@ let movies=[
     {name:"The Green Mile", img:"https://mp4moviez.football/cover/the-green-mile-(1999)-hindi-dubbed-movie.jpg", link1:"https://video-downloads.googleusercontent.com/ADGPM2kFELWWWAT9h-PY-HDdbNathD654csqHByPODaYwJSS3H_gW6Opuqwp2OEgzuIWLSYNTYjj9LqpyLEwOp3ZwNJM4HhUtCVkpFtCChf7DNdn8zC-thBqvgzNvLZcnhWiiJC8brl1tHORk0j1MW4m0i4qpJK7i_34kXQMjgorGpIVfhTNptI_GNaTrgOYK3EVs0avWUUWAxnRzM5xq3ft94oQWDfozOAel-qS5LsEA8Ex7w6POGs", link2:"https://drive.google.com/file/d/1s5L4J-_oShZZGP0lhTgIz-mKJT23K0p0/view?pli=1"},
     {name:"The Spiderwick Chronicles", img:"https://images.justwatch.com/poster/183682366/s718/the-spiderwick-chronicles.jpg", link1:"https://jio1.fastxmp4.com/download/22291/The-Spiderwick-Chronicles-(2008)-Hindi-Dubbed-BluRay--720p-[Orgmovies].mp4?st=nVtysLhNcZtT-rPCdN4s4w&e=1775060618", link2:"https://111.90.159.132/family/the-spiderwick-chronicles-12122023/"}
 ];
-
 for(let i=4;i<=15;i++){
     movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`videos/hollywood${i}_hd.mp4`,link2:`videos/hollywood${i}_sd.mp4`});
 }
-
 let grid=document.getElementById("movieGrid");
 function loadMovies(list){
     grid.innerHTML="";
@@ -289,7 +327,7 @@ document.getElementById("searchInput").addEventListener("input",(e)=>{
     loadMovies(movies.filter(m=>m.name.toLowerCase().includes(q)));
 });
 
-// Ripple effect for Download buttons
+// Ripple effect
 document.addEventListener('click', function(e){
     if(e.target.classList.contains('download')){
         e.stopPropagation();
@@ -313,16 +351,49 @@ document.addEventListener('click', function(e){
 const musicBtn = document.getElementById('musicToggle');
 const music = document.getElementById('bgMusic');
 let isPlaying = false;
-
 musicBtn.addEventListener('click', ()=>{
-    if(isPlaying){
-        music.pause();
-        musicBtn.innerHTML = "🎵 Play";
-    } else {
-        music.play();
-        musicBtn.innerHTML = "🔊 Pause";
-    }
+    isPlaying ? music.pause() : music.play();
+    musicBtn.textContent = isPlaying ? '🎵' : '🔊';
     isPlaying = !isPlaying;
+    musicBtn.classList.add('active');
+    setTimeout(()=>musicBtn.classList.remove('active'),600);
+});
+
+// NIGHT MODE PERSISTENCE
+const nightBtn = document.getElementById('nightToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+
+// Load saved night mode from localStorage
+let nightMode = localStorage.getItem('nightMode')==='false'? false : true;
+
+function applyMode(night){
+    nightBtn.classList.add('active');
+    setTimeout(()=> nightBtn.classList.remove('active'), 600);
+
+    if(!night){
+        document.documentElement.style.setProperty('--bg-color','#fff');
+        document.documentElement.style.setProperty('--text-color','#111');
+        document.documentElement.style.setProperty('--card-bg','rgba(0,0,0,0.05)');
+        document.documentElement.style.setProperty('--highlight-color','#ff00aa');
+        document.documentElement.style.setProperty('--search-bg','#eee');
+        toggleIcon.textContent='☀️';
+    } else {
+        document.documentElement.style.setProperty('--bg-color','#111');
+        document.documentElement.style.setProperty('--text-color','#fff');
+        document.documentElement.style.setProperty('--card-bg','rgba(255,255,255,0.05)');
+        document.documentElement.style.setProperty('--highlight-color','#00ff88');
+        document.documentElement.style.setProperty('--search-bg','#222');
+        toggleIcon.textContent='🌙';
+    }
+
+    localStorage.setItem('nightMode', night);
+}
+
+applyMode(nightMode);
+
+nightBtn.addEventListener('click', ()=>{
+    nightMode = !nightMode;
+    applyMode(nightMode);
 });
 </script>
 </body>
