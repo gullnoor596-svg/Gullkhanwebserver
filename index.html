@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕 𝗦𝗘𝗥𝗩𝗘𝗥</title>
+<title>GULL KHAN WEB SERVER</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
 :root {
@@ -15,7 +15,7 @@
     --download-sd: linear-gradient(90deg,#00ccff,#0066ff);
 }
 
-/* ===== BODY ===== */
+/* BODY */
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
@@ -25,13 +25,19 @@ body{
     transition: background 0.7s ease, color 0.7s ease;
 }
 
-/* DRAWER - original rainbow/frosted style */
+/* MAIN CONTENT CONTAINER */
+.main-content{
+    position: relative;
+    padding: 20px;
+}
+
+/* DRAWER */
 .drawer{
-    position:fixed;
+    position: fixed;
     top:0;
     left:0;
     width:0;
-    height:45%;
+    height: 45%;
     background:rgba(0,0,0,0.8);
     backdrop-filter:blur(12px);
     overflow:hidden;
@@ -84,18 +90,18 @@ body{
     z-index:1003;
 }
 
-/* OPEN DRAWER BUTTON */
+/* OPEN DRAWER BUTTON - FIX INSIDE PAGE */
 #openDrawerBtn{
-    position:fixed;
-    top:15px;
-    left:15px;
-    font-size:40px;
-    background:linear-gradient(45deg,#00ff88,#00ccff);
-    border:none;
-    padding:10px;
-    border-radius:10px;
-    cursor:pointer;
-    z-index:1001;
+    position: absolute; /* inside content, scrolls with page */
+    top: 20px;
+    left: 20px;
+    font-size: 40px;
+    background: linear-gradient(45deg,#00ff88,#00ccff);
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 1000;
 }
 
 /* TITLE */
@@ -125,10 +131,10 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 
 /* MOVIE GRID */
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:20px;
-    padding:20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+    gap: 20px;
+    padding: 20px;
 }
 
 /* MOVIE CARD */
@@ -155,17 +161,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     margin:12px 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
-
-/* Card touch effect */
-.movie.active-touch::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(120deg,rgba(255,255,255,0.8),transparent);
-    animation:slide 0.5s;
-    border-radius:15px;
-}
-@keyframes slide{from{left:-100%}to{left:100%}}
 
 /* DOWNLOAD BUTTONS */
 .download {
@@ -202,7 +197,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 /* FADE-IN */
 .fadeIn{opacity:0;transform:translateY(20px);animation:fadeUp 0.6s forwards;}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
-
 </style>
 </head>
 <body>
@@ -216,28 +210,26 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     <a href="https://whatsapp.com/channel/0029VbCbSoPCMY0JBsgwbx2q" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     <a href="https://www.tiktok.com/@pathanwala1?_r=1&_t=ZS-959EeyqQEza" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
     <a href="#" onclick="shareWebsite()"><i class="fas fa-share-alt"></i> Share</a>
-
-    <!-- MUSIC & NIGHT MODE INSIDE DRAWER -->
     <a href="javascript:void(0)" id="drawerMusicToggle"><i class="fas fa-music"></i> Music</a>
-
-
     <span class="closebtn" onclick="closeDrawer()">×</span>
 </div>
 
-<button id="openDrawerBtn" onclick="openDrawer()">☰</button>
+<div class="main-content">
+    <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
+
+    <h1><span class="rainbow-text">GULL KHAN WEB</span></h1>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search movies...">
+    </div>
+
+    <div class="grid" id="movieGrid"></div>
+</div>
 
 <!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
     <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
 </audio>
-
-<h1><span class="rainbow-text">𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕</span></h1>
-
-<div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search movies...">
-</div>
-
-<div class="grid" id="movieGrid"></div>
 
 <script>
 // Drawer
@@ -252,6 +244,7 @@ function shareWebsite(){
     else{prompt("Copy this link:",url);}
 }
 
+// Movies
 let movies=[
     {name:"V for Vendetta", img:"https://imgshare.info/images/2025/04/26/V.for.Vendetta.2005..jpg", link1:"https://hub.pizzacdn.buzz/f047ce7a424bb2de20b07e685d6cf3ed?token=1774952598123", link2:"https://pixeldrain.dev/u/XJcPnuBR"},
     {name:"The Green Mile", img:"https://mp4moviez.football/cover/the-green-mile-(1999)-hindi-dubbed-movie.jpg", link1:"https://pixeldrain.dev/u/zHthfKXo", link2:"https://drive.google.com/file/d/1s5L4J-_oShZZGP0lhTgIz-mKJT23K0p0/view?pli=1"},
@@ -269,13 +262,14 @@ let movies=[
     {name:"Puss in Boots (2017)", img:"https://mp4moviez.football/cover/puss-in-boots-(2017)-hindi-dubbed-bluray.jpg", link1:"https://mp4moviez.football/dl.php?id=28732&q=720&jio=yes&title=Puss-in-Boots-(2017)-Hindi-Dubbed-BluRay", link2:"https://mp4moviez.football/dl.php?id=28732&q=720&title=Puss-in-Boots-(2017)-Hindi-Dubbed-BluRay"},
     {name:"Puss in Boots (2022)", img:"https://catimages.org/images/2023/01/08/Puss-in-Boots-The-Last-Wish-2022.jpg", link1:"https://pub-0cef6721657649918259091880efe12f.r2.dev/e2714e009c9e6950262793f5f4e76c0f?token=1775201453", link2:"https://mp4moviez.football/dl.php?id=29464&q=720&jio=yes&title=Puss-in-Boots-The-Last-Wish-(2022)-Hindi-ORG-Dubbed-BluRay"},
     
-  
-    
-
 ];
+
+// Placeholder Hollywood movies
 for(let i=4;i<=15;i++){
     movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`#`,link2:`#`});
 }
+
+// Load movies
 let grid=document.getElementById("movieGrid");
 function loadMovies(list){
     grid.innerHTML="";
@@ -289,11 +283,6 @@ function loadMovies(list){
             <a class="download sd" href="${m.link2}" target="_blank">Download SD</a>
         `;
         grid.appendChild(box);
-
-        box.addEventListener("touchstart", e=>{
-            if(!e.target.classList.contains('download')) box.classList.add("active-touch");
-        });
-        box.addEventListener("touchend",()=>setTimeout(()=>box.classList.remove("active-touch"),300));
     });
 }
 loadMovies(movies);
@@ -304,27 +293,7 @@ document.getElementById("searchInput").addEventListener("input",(e)=>{
     loadMovies(movies.filter(m=>m.name.toLowerCase().includes(q)));
 });
 
-// Ripple effect
-document.addEventListener('click', function(e){
-    if(e.target.classList.contains('download')){
-        e.stopPropagation();
-        const btn = e.target;
-        const ripple = document.createElement('span');
-        ripple.className='ripple';
-        ripple.style.background = btn.classList.contains('hd') ? 'rgba(0,255,136,0.5)' : 'rgba(0,204,255,0.5)';
-
-        const rect = btn.getBoundingClientRect();
-        const size = Math.max(rect.width,rect.height)*2.5;
-        ripple.style.width = ripple.style.height = size+'px';
-        ripple.style.left = (e.clientX - rect.left - size/2)+'px';
-        ripple.style.top = (e.clientY - rect.top - size/2)+'px';
-
-        btn.appendChild(ripple);
-        ripple.addEventListener('animationend', ()=>ripple.remove());
-    }
-});
-
-// MUSIC TOGGLE
+// MUSIC
 const musicBtn = document.getElementById('drawerMusicToggle');
 const music = document.getElementById('bgMusic');
 let isPlaying = false;
@@ -334,7 +303,7 @@ musicBtn.addEventListener('click', ()=>{
     isPlaying = !isPlaying;
 });
 
-// NIGHT MODE TOGGLE
+// NIGHT MODE
 const nightBtn = document.getElementById('drawerNightToggle');
 const toggleIcon = document.getElementById('drawerToggleIcon');
 let nightMode = localStorage.getItem('nightMode')==='false'? false : true;
@@ -363,5 +332,6 @@ nightBtn.addEventListener('click', ()=>{
     applyMode(nightMode);
 });
 </script>
+
 </body>
 </html>
