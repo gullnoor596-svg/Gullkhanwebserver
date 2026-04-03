@@ -4,11 +4,6 @@
 <meta charset="UTF-8">
 <title>𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕 𝗦𝗘𝗥𝗩𝗘𝗥</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <style>
 :root {
     --bg-color: #111;
@@ -20,6 +15,7 @@
     --download-sd: linear-gradient(90deg,#00ccff,#0066ff);
 }
 
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
@@ -29,13 +25,13 @@ body{
     transition: background 0.7s ease, color 0.7s ease;
 }
 
-/* DRAWER */
+/* DRAWER - original rainbow/frosted style */
 .drawer{
     position:fixed;
     top:0;
     left:0;
     width:0;
-    height:50%;
+    height:45%;
     background:rgba(0,0,0,0.8);
     backdrop-filter:blur(12px);
     overflow:hidden;
@@ -61,7 +57,10 @@ body{
     mask-composite:exclude;
     animation:borderMove 6s linear infinite;
 }
-@keyframes borderMove{0%{background-position:0%}100%{background-position:200%}}
+@keyframes borderMove{
+    0%{background-position:0%}
+    100%{background-position:200%}
+}
 .drawer a{
     padding:15px;
     font-size:30px;
@@ -85,6 +84,7 @@ body{
     z-index:1003;
 }
 
+/* OPEN DRAWER BUTTON */
 #openDrawerBtn{
     position:fixed;
     top:15px;
@@ -98,7 +98,8 @@ body{
     z-index:1001;
 }
 
-h1{text-align:center;font-size:70px;margin-top:80px;}
+/* TITLE */
+h1{text-align:center;font-size:80px;margin-top:80px;}
 .rainbow-text{
     font-weight:bold;
     background:linear-gradient(90deg,red,magenta,blue,cyan,green,yellow,red);
@@ -109,11 +110,12 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
 }
 @keyframes shimmer{0%{background-position:100%}100%{background-position:-100%}}
 
+/* SEARCH BAR */
 .search-container{text-align:center;margin:20px;}
 .search-container input{
-    width:90%;
+    width:600%;
     max-width:700px;
-    padding:40px;
+    padding:35px;
     font-size:35px;
     border-radius:15px;
     border:none;
@@ -121,6 +123,7 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
     color: var(--text-color);
 }
 
+/* MOVIE GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -128,6 +131,7 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
     padding:20px;
 }
 
+/* MOVIE CARD */
 .movie{
     background: var(--card-bg);
     border-radius:15px;
@@ -151,6 +155,8 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
     margin:12px 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
+
+/* Card touch effect */
 .movie.active-touch::after{
     content:"";
     position:absolute;
@@ -161,6 +167,7 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
 }
 @keyframes slide{from{left:-100%}to{left:100%}}
 
+/* DOWNLOAD BUTTONS */
 .download {
     display: block;
     margin: 8px auto 15px auto;
@@ -181,6 +188,7 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
 .download.sd {background: var(--download-sd);}
 .download:active{transform:scale(0.95);}
 
+/* Ripple effect */
 .ripple{
     position:absolute;
     border-radius:50%;
@@ -191,27 +199,34 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
 }
 @keyframes ripple-effect{to{transform:scale(6);opacity:0;}}
 
+/* FADE-IN */
 .fadeIn{opacity:0;transform:translateY(20px);animation:fadeUp 0.6s forwards;}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+
 </style>
 </head>
 <body>
 
+<!-- DRAWER -->
 <div id="myDrawer" class="drawer">
     <a href="javascript:void(0)" id="drawerNightToggle"><i id="drawerToggleIcon">🌙</i> Night Mode</a>
-    <a href="javascript:void(0)" style="pointer-events:none;">Total Viewer: <span id="visitorCount">0</span></a>
     <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
     <a href="https://www.facebook.com/share/1BTtkqEN28/" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
     <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
     <a href="https://whatsapp.com/channel/0029VbCbSoPCMY0JBsgwbx2q" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     <a href="https://www.tiktok.com/@pathanwala1?_r=1&_t=ZS-959EeyqQEza" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
     <a href="#" onclick="shareWebsite()"><i class="fas fa-share-alt"></i> Share</a>
-    <a href="javascript:void(0)" id="drawerMusicToggle"><i class="fas fa-music"></i> Music</a>   
+
+    <!-- MUSIC & NIGHT MODE INSIDE DRAWER -->
+    <a href="javascript:void(0)" id="drawerMusicToggle"><i class="fas fa-music"></i> Music</a>
+
+
     <span class="closebtn" onclick="closeDrawer()">×</span>
 </div>
 
 <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
 
+<!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
     <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
 </audio>
@@ -225,11 +240,11 @@ h1{text-align:center;font-size:70px;margin-top:80px;}
 <div class="grid" id="movieGrid"></div>
 
 <script>
-// DRAWER
+// Drawer
 function openDrawer(){document.getElementById("myDrawer").style.width="300px";}
 function closeDrawer(){document.getElementById("myDrawer").style.width="0";}
 
-// SHARE
+// Share
 function shareWebsite(){
     const url = "https://gullnoor596-svg.github.io/MoviesServer/";
     if(navigator.share){navigator.share({title:"GULLKHAN WEBSITE",text:"Check this website!",url:url});}
@@ -237,9 +252,8 @@ function shareWebsite(){
     else{prompt("Copy this link:",url);}
 }
 
-// MOVIES
 let movies=[
-{name:"V for Vendetta", img:"https://imgshare.info/images/2025/04/26/V.for.Vendetta.2005..jpg", link1:"https://hub.pizzacdn.buzz/f047ce7a424bb2de20b07e685d6cf3ed?token=1774952598123", link2:"https://pixeldrain.dev/u/XJcPnuBR"},
+    {name:"V for Vendetta", img:"https://imgshare.info/images/2025/04/26/V.for.Vendetta.2005..jpg", link1:"https://hub.pizzacdn.buzz/f047ce7a424bb2de20b07e685d6cf3ed?token=1774952598123", link2:"https://pixeldrain.dev/u/XJcPnuBR"},
     {name:"The Green Mile", img:"https://mp4moviez.football/cover/the-green-mile-(1999)-hindi-dubbed-movie.jpg", link1:"https://pixeldrain.dev/u/zHthfKXo", link2:"https://drive.google.com/file/d/1s5L4J-_oShZZGP0lhTgIz-mKJT23K0p0/view?pli=1"},
     {name:"The Spiderwick Chronicles", img:"https://images.justwatch.com/poster/183682366/s718/the-spiderwick-chronicles.jpg", link1:"https://mp4moviez.football/dl.php?id=22291&q=720&jio=yes&title=The-Spiderwick-Chronicles-(2008)-Hindi-Dubbed-BluRay", link2:"https://111.90.159.132/family/the-spiderwick-chronicles-12122023/"},
     {name:"The Croods", img:"https://myimg.click/images/2021/09/12/27zvjVOtOi5ped1HSlJKNsKXkFH.jpg", link1:"https://pixeldrain.dev/u/oeJPyhxp", link2:"https://pixeldrain.dev/u/QFsww44z"},
@@ -255,12 +269,13 @@ let movies=[
     {name:"Puss in Boots (2017)", img:"https://mp4moviez.football/cover/puss-in-boots-(2017)-hindi-dubbed-bluray.jpg", link1:"https://mp4moviez.football/dl.php?id=28732&q=720&jio=yes&title=Puss-in-Boots-(2017)-Hindi-Dubbed-BluRay", link2:"https://mp4moviez.football/dl.php?id=28732&q=720&title=Puss-in-Boots-(2017)-Hindi-Dubbed-BluRay"},
     {name:"Puss in Boots (2022)", img:"https://catimages.org/images/2023/01/08/Puss-in-Boots-The-Last-Wish-2022.jpg", link1:"https://pub-0cef6721657649918259091880efe12f.r2.dev/e2714e009c9e6950262793f5f4e76c0f?token=1775201453", link2:"https://mp4moviez.football/dl.php?id=29464&q=720&jio=yes&title=Puss-in-Boots-The-Last-Wish-(2022)-Hindi-ORG-Dubbed-BluRay"},
     
+  
+    
+
 ];
-// ADD PLACEHOLDERS
 for(let i=4;i<=15;i++){
     movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`#`,link2:`#`});
 }
-
 let grid=document.getElementById("movieGrid");
 function loadMovies(list){
     grid.innerHTML="";
@@ -283,13 +298,13 @@ function loadMovies(list){
 }
 loadMovies(movies);
 
-// SEARCH
+// Search
 document.getElementById("searchInput").addEventListener("input",(e)=>{
     let q=e.target.value.toLowerCase();
     loadMovies(movies.filter(m=>m.name.toLowerCase().includes(q)));
 });
 
-// RIPPLE EFFECT
+// Ripple effect
 document.addEventListener('click', function(e){
     if(e.target.classList.contains('download')){
         e.stopPropagation();
@@ -343,24 +358,10 @@ function applyMode(night){
     localStorage.setItem('nightMode', night);
 }
 applyMode(nightMode);
-nightBtn.addEventListener('click', ()=>{ nightMode = !nightMode; applyMode(nightMode); });
-
-// VISITOR TRACKER
-const firebaseConfig = {
-  databaseURL: "https://accountctf-default-rtdb.firebaseio.com/"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-let visitorId = localStorage.getItem("visitorId");
-if(!visitorId){ visitorId = "v_" + Math.random().toString(36).substr(2,9); localStorage.setItem("visitorId",visitorId); }
-
-const visitorRef = db.ref("visitors");
-visitorRef.child(visitorId).set({joined:Date.now()});
-visitorRef.on("value", snapshot=>{
-    document.getElementById("visitorCount").innerText = snapshot.numChildren();
+nightBtn.addEventListener('click', ()=>{
+    nightMode = !nightMode;
+    applyMode(nightMode);
 });
 </script>
-
 </body>
 </html>
