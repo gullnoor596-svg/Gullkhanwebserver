@@ -60,7 +60,7 @@ body{
 }
 .drawer a{
     padding:15px;
-    font-size:60px;
+    font-size:40px;
     color: var(--highlight-color);
     text-decoration:none;
     display:block;
@@ -229,7 +229,7 @@ function shareWebsite(){
     else{prompt("Copy this link:",url);}
 }
 
-// Movies
+// Movies array + Hollywood placeholders
 let movies=[
     {name:"V for Vendetta", img:"https://imgshare.info/images/2025/04/26/V.for.Vendetta.2005..jpg", link1:"https://hub.pizzacdn.buzz/f047ce7a424bb2de20b07e685d6cf3ed?token=1774952598123", link2:"https://pixeldrain.dev/u/XJcPnuBR"},
     {name:"The Green Mile", img:"https://mp4moviez.football/cover/the-green-mile-(1999)-hindi-dubbed-movie.jpg", link1:"https://pixeldrain.dev/u/zHthfKXo", link2:"https://drive.google.com/file/d/1s5L4J-_oShZZGP0lhTgIz-mKJT23K0p0/view?pli=1"},
@@ -251,16 +251,17 @@ let movies=[
     {name:"Cars (2017) ",img:"https://imgshare.info/images/2025/06/05/Cars-3-2017.jpg", link1:"https://drive.google.com/file/d/1QITgOjK-z6nGR3AQSQvUqhQe-D01ZGwo/view", link2:"https://pixeldrain.dev/u/N3bpVo53"},
     
 ];
-// Add Hollywood placeholders 4–15
-for(let i=6;i<=14;i++){
-    movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450?text=Hollywood+${i}`,link1:"#",link2:"#"});
-}
+// Add placeholder Hollywood 6-1000
+for(let i=6;i<=100;i++){movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450?text=Hollywood+${i}`,link1:"#",link2:"#"});}
 
-// Load grid
-let grid=document.getElementById("movieGrid");
-function loadMovies(list){
-    grid.innerHTML="";
-    list.forEach(m=>{
+// Grid batch loading
+const grid=document.getElementById("movieGrid");
+const batchSize=50;
+let currentIndex=0;
+
+function loadBatch(list=movies){
+    const nextBatch=list.slice(currentIndex,currentIndex+batchSize);
+    nextBatch.forEach(m=>{
         let box=document.createElement("div");
         box.className="movie fadeIn";
         box.innerHTML=`
@@ -270,36 +271,47 @@ function loadMovies(list){
             <a class="download sd" href="${m.link2}" target="_blank">Download SD</a>
         `;
         grid.appendChild(box);
+        // touch effect
         box.addEventListener("touchstart", e=>{
             if(!e.target.classList.contains('download')) box.classList.add("active-touch");
         });
         box.addEventListener("touchend",()=>setTimeout(()=>box.classList.remove("active-touch"),300));
     });
+    currentIndex+=batchSize;
 }
-loadMovies(movies);
+
+// Initial load
+loadBatch();
+
+// Infinite scroll
+window.addEventListener('scroll', ()=>{
+    if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 200){
+        if(currentIndex<movies.length){
+            loadBatch();
+        }
+    }
+});
 
 // Search
 document.getElementById("searchInput").addEventListener("input",(e)=>{
     let q=e.target.value.toLowerCase();
-    loadMovies(movies.filter(m=>m.name.toLowerCase().includes(q)));
+    currentIndex=0;
+    grid.innerHTML="";
+    let filtered=movies.filter(m=>m.name.toLowerCase().includes(q));
+    loadBatch(filtered);
 });
 
-// MUSIC TOGGLE FIXED
+// Music toggle
 const musicBtn = document.getElementById('drawerMusicToggle');
 const music = document.getElementById('bgMusic');
 let isPlaying = false;
 musicBtn.addEventListener('click', ()=>{
-    if(!isPlaying){
-        music.play().catch(()=>alert("Tap to play audio first")); 
-        musicBtn.innerHTML='<i class="fas fa-volume-up"></i> Playing';
-    } else {
-        music.pause();
-        musicBtn.innerHTML='<i class="fas fa-music"></i> Music';
-    }
+    if(!isPlaying){music.play().catch(()=>alert("Tap to play audio first")); musicBtn.innerHTML='<i class="fas fa-volume-up"></i> Playing';} 
+    else {music.pause(); musicBtn.innerHTML='<i class="fas fa-music"></i> Music';}
     isPlaying = !isPlaying;
 });
 
-// NIGHT MODE
+// Night mode
 const nightBtn = document.getElementById('drawerNightToggle');
 const toggleIcon = document.getElementById('drawerToggleIcon');
 let nightMode = localStorage.getItem('nightMode')==='false'? false : true;
