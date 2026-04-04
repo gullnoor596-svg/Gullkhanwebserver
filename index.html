@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GULL KHAN WEB SERVER</title>
+<title>𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕 𝗦𝗘𝗥𝗩𝗘𝗥</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
 :root {
@@ -15,7 +15,7 @@
     --download-sd: linear-gradient(90deg,#00ccff,#0066ff);
 }
 
-/* BODY */
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
@@ -25,19 +25,13 @@ body{
     transition: background 0.7s ease, color 0.7s ease;
 }
 
-/* MAIN CONTENT CONTAINER */
-.main-content{
-    position: relative;
-    padding: 20px;
-}
-
 /* DRAWER */
 .drawer{
-    position: fixed;
+    position:fixed;
     top:0;
     left:0;
     width:0;
-    height: 45%;
+    height:45%;
     background:rgba(0,0,0,0.8);
     backdrop-filter:blur(12px);
     overflow:hidden;
@@ -90,18 +84,18 @@ body{
     z-index:1003;
 }
 
-/* OPEN DRAWER BUTTON - FIX INSIDE PAGE */
+/* OPEN DRAWER BUTTON (Fixed Issue) */
 #openDrawerBtn{
-    position: absolute; /* inside content, scrolls with page */
-    top: 20px;
-    left: 20px;
+    position: absolute; /* fixed replaced with absolute */
+    top: 20px;          /* set your position */
+    left: 20px;         /* set your position */
     font-size: 40px;
     background: linear-gradient(45deg,#00ff88,#00ccff);
-    border: none;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    z-index: 1000;
+    border:none;
+    padding:10px;
+    border-radius:10px;
+    cursor:pointer;
+    z-index:1001; /* drawer ke upar */
 }
 
 /* TITLE */
@@ -131,10 +125,10 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 
 /* MOVIE GRID */
 .grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
-    gap: 20px;
-    padding: 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+    padding:20px;
 }
 
 /* MOVIE CARD */
@@ -151,7 +145,7 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 }
 .movie img{
     width:100%;
-    height:500px;
+    height:450px;
     object-fit:cover;
 }
 .movie h3 {
@@ -161,6 +155,17 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     margin:12px 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
+
+/* Card touch effect */
+.movie.active-touch::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg,rgba(255,255,255,0.8),transparent);
+    animation:slide 0.5s;
+    border-radius:15px;
+}
+@keyframes slide{from{left:-100%}to{left:100%}}
 
 /* DOWNLOAD BUTTONS */
 .download {
@@ -214,22 +219,18 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     <span class="closebtn" onclick="closeDrawer()">×</span>
 </div>
 
-<div class="main-content">
+<!-- Drawer Button Wrapper -->
+<div style="position:relative; height:100px; width:100%;">
     <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
-
-    <h1><span class="rainbow-text">GULL KHAN WEB</span></h1>
-
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search movies...">
-    </div>
-
-    <div class="grid" id="movieGrid"></div>
 </div>
 
-<!-- BACKGROUND MUSIC -->
-<audio id="bgMusic" loop>
-    <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
-</audio>
+<h1><span class="rainbow-text">𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕</span></h1>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search movies...">
+</div>
+
+<div class="grid" id="movieGrid"></div>
 
 <script>
 // Drawer
@@ -265,15 +266,11 @@ let movies=[
     {name:"Cars (2011) ",img:"https://imgshare.info/images/2025/06/05/Cars-2-2011.jpg", link1:"https://drive.google.com/file/d/1PbGxWmBiJ2rQs5AsPKmBU0IVZNFLSEFs/view", link2:"https://ddl2.cloudserver-1692956285.workers.dev/1397967876/117db813001658f3145bd09ae824ff63ac8da401fef621f0fcda6ccf85481b12f66c4011995ecb84a68c6ce04b7b1fab3bead4f80c8c39c95ccb00634e92f21db522f6d3590481e2e46307cd5c93acdd36bc2ff02745e428830e2804a161e118a3cb1ee91ad8a6b1e98b2825e2b38697096426f42c711d8573ce4c7fd8dc4600::5724ae75cee951f0d32df02219dbdd96/Cars.2.2011.1080p.BluRay.Hindi.English.DD.2.0.x264.ESubs.mkv?token=1775271221"},
     {name:"Cars (2017) ",img:"https://imgshare.info/images/2025/06/05/Cars-3-2017.jpg", link1:"https://drive.google.com/file/d/1QITgOjK-z6nGR3AQSQvUqhQe-D01ZGwo/view", link2:"https://pixeldrain.dev/u/N3bpVo53"},
     
-    
 ];
-
 // Placeholder Hollywood movies
 for(let i=4;i<=15;i++){
     movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`#`,link2:`#`});
 }
-
-// Load movies
 let grid=document.getElementById("movieGrid");
 function loadMovies(list){
     grid.innerHTML="";
@@ -287,6 +284,10 @@ function loadMovies(list){
             <a class="download sd" href="${m.link2}" target="_blank">Download SD</a>
         `;
         grid.appendChild(box);
+        box.addEventListener("touchstart", e=>{
+            if(!e.target.classList.contains('download')) box.classList.add("active-touch");
+        });
+        box.addEventListener("touchend",()=>setTimeout(()=>box.classList.remove("active-touch"),300));
     });
 }
 loadMovies(movies);
@@ -297,7 +298,7 @@ document.getElementById("searchInput").addEventListener("input",(e)=>{
     loadMovies(movies.filter(m=>m.name.toLowerCase().includes(q)));
 });
 
-// MUSIC
+// MUSIC TOGGLE
 const musicBtn = document.getElementById('drawerMusicToggle');
 const music = document.getElementById('bgMusic');
 let isPlaying = false;
@@ -307,7 +308,7 @@ musicBtn.addEventListener('click', ()=>{
     isPlaying = !isPlaying;
 });
 
-// NIGHT MODE
+// NIGHT MODE TOGGLE
 const nightBtn = document.getElementById('drawerNightToggle');
 const toggleIcon = document.getElementById('drawerToggleIcon');
 let nightMode = localStorage.getItem('nightMode')==='false'? false : true;
@@ -336,6 +337,5 @@ nightBtn.addEventListener('click', ()=>{
     applyMode(nightMode);
 });
 </script>
-
 </body>
 </html>
