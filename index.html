@@ -14,8 +14,6 @@
     --download-hd: linear-gradient(90deg,#00ff88,#00cc55);
     --download-sd: linear-gradient(90deg,#00ccff,#0066ff);
 }
-
-/* ===== BODY ===== */
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
@@ -24,7 +22,6 @@ body{
     overflow-x:hidden;
     transition: background 0.7s ease, color 0.7s ease;
 }
-
 /* DRAWER */
 .drawer{
     position:fixed;
@@ -83,22 +80,18 @@ body{
     cursor:pointer;
     z-index:1003;
 }
-
-/* OPEN DRAWER BUTTON (Fixed Issue) */
 #openDrawerBtn{
-    position: absolute; /* fixed replaced with absolute */
-    top: 20px;          /* set your position */
-    left: 20px;         /* set your position */
+    position: absolute;
+    top: 20px;
+    left: 20px;
     font-size: 40px;
     background: linear-gradient(45deg,#00ff88,#00ccff);
     border:none;
     padding:10px;
     border-radius:10px;
     cursor:pointer;
-    z-index:1001; /* drawer ke upar */
+    z-index:1001;
 }
-
-/* TITLE */
 h1{text-align:center;font-size:80px;margin-top:80px;}
 .rainbow-text{
     font-weight:bold;
@@ -109,8 +102,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     animation:shimmer 3s linear infinite;
 }
 @keyframes shimmer{0%{background-position:100%}100%{background-position:-100%}}
-
-/* SEARCH BAR */
 .search-container{text-align:center;margin:20px;}
 .search-container input{
     width:600%;
@@ -122,16 +113,12 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     background: var(--search-bg);
     color: var(--text-color);
 }
-
-/* MOVIE GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:20px;
     padding:20px;
 }
-
-/* MOVIE CARD */
 .movie{
     background: var(--card-bg);
     border-radius:15px;
@@ -155,8 +142,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     margin:12px 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
-
-/* Card touch effect */
 .movie.active-touch::after{
     content:"";
     position:absolute;
@@ -166,8 +151,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     border-radius:15px;
 }
 @keyframes slide{from{left:-100%}to{left:100%}}
-
-/* DOWNLOAD BUTTONS */
 .download {
     display: block;
     margin: 8px auto 15px auto;
@@ -187,8 +170,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 .download.hd {background: var(--download-hd);}
 .download.sd {background: var(--download-sd);}
 .download:active{transform:scale(0.95);}
-
-/* Ripple effect */
 .ripple{
     position:absolute;
     border-radius:50%;
@@ -198,8 +179,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     opacity:0.5;
 }
 @keyframes ripple-effect{to{transform:scale(6);opacity:0;}}
-
-/* FADE-IN */
 .fadeIn{opacity:0;transform:translateY(20px);animation:fadeUp 0.6s forwards;}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
 </style>
@@ -219,7 +198,7 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
     <span class="closebtn" onclick="closeDrawer()">×</span>
 </div>
 
-<!-- Drawer Button Wrapper -->
+<!-- Drawer Button -->
 <div style="position:relative; height:100px; width:100%;">
     <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
 </div>
@@ -231,6 +210,11 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 </div>
 
 <div class="grid" id="movieGrid"></div>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
+</audio>
 
 <script>
 // Drawer
@@ -267,10 +251,12 @@ let movies=[
     {name:"Cars (2017) ",img:"https://imgshare.info/images/2025/06/05/Cars-3-2017.jpg", link1:"https://drive.google.com/file/d/1QITgOjK-z6nGR3AQSQvUqhQe-D01ZGwo/view", link2:"https://pixeldrain.dev/u/N3bpVo53"},
     
 ];
-// Placeholder Hollywood movies
-for(let i=4;i<=15;i++){
-    movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450`,link1:`#`,link2:`#`});
+// Add Hollywood placeholders 4–15
+for(let i=6;i<=14;i++){
+    movies.push({name:"Hollywood "+i,img:`https://via.placeholder.com/300x450?text=Hollywood+${i}`,link1:"#",link2:"#"});
 }
+
+// Load grid
 let grid=document.getElementById("movieGrid");
 function loadMovies(list){
     grid.innerHTML="";
@@ -298,21 +284,25 @@ document.getElementById("searchInput").addEventListener("input",(e)=>{
     loadMovies(movies.filter(m=>m.name.toLowerCase().includes(q)));
 });
 
-// MUSIC TOGGLE
+// MUSIC TOGGLE FIXED
 const musicBtn = document.getElementById('drawerMusicToggle');
 const music = document.getElementById('bgMusic');
 let isPlaying = false;
 musicBtn.addEventListener('click', ()=>{
-    isPlaying ? music.pause() : music.play();
-    musicBtn.innerHTML = isPlaying ? '<i class="fas fa-music"></i> Music' : '<i class="fas fa-volume-up"></i> Playing';
+    if(!isPlaying){
+        music.play().catch(()=>alert("Tap to play audio first")); 
+        musicBtn.innerHTML='<i class="fas fa-volume-up"></i> Playing';
+    } else {
+        music.pause();
+        musicBtn.innerHTML='<i class="fas fa-music"></i> Music';
+    }
     isPlaying = !isPlaying;
 });
 
-// NIGHT MODE TOGGLE
+// NIGHT MODE
 const nightBtn = document.getElementById('drawerNightToggle');
 const toggleIcon = document.getElementById('drawerToggleIcon');
 let nightMode = localStorage.getItem('nightMode')==='false'? false : true;
-
 function applyMode(night){
     if(!night){
         document.documentElement.style.setProperty('--bg-color','#fff');
