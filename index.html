@@ -22,76 +22,7 @@ body{
     overflow-x:hidden;
     transition: background 0.7s ease, color 0.7s ease;
 }
-/* DRAWER */
-.drawer{
-    position:fixed;
-    top:0;
-    left:0;
-    width:0;
-    height:60%;
-    background:rgba(0,0,0,0.8);
-    backdrop-filter:blur(12px);
-    overflow:hidden;
-    z-index:1000;
-    transition:0.4s;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    gap:15px;
-    padding-left:0px;
-    border-radius:0 25px 300px 0;
-}
-.drawer::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    padding:3px;
-    border-radius:0 25px 500px 0;
-    background:linear-gradient(270deg,#00ff88,#00ccff,#ff00ff,#00ff88);
-    background-size:600% 600%;
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;
-    mask-composite:exclude;
-    animation:borderMove 6s linear infinite;
-}
-@keyframes borderMove{
-    0%{background-position:0%}
-    100%{background-position:200%}
-}
-.drawer a{
-    padding:15px;
-    font-size:40px;
-    color: var(--highlight-color);
-    text-decoration:none;
-    display:block;
-    transition:0.5s;
-    z-index:1002;
-    border-radius:10px;
-}
-.drawer a:hover{
-    background:rgba(0,255,136,0.2);
-    color:#fff;
-}
-.closebtn{
-    position:absolute;
-    right:15px;
-    top:10px;
-    font-size:100px;
-    cursor:pointer;
-    z-index:1003;
-}
-#openDrawerBtn{
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size:100px;
-    background: linear-gradient(45deg,#00ff88,#00ccff);
-    border:none;
-    padding:10px;
-    border-radius:10px;
-    cursor:pointer;
-    z-index:1001;
-}
+
 h1{text-align:center;font-size:80px;margin-top:80px;}
 .rainbow-text{
     font-weight:bold;
@@ -185,24 +116,6 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 </head>
 <body>
 
-<!-- DRAWER -->
-<div id="myDrawer" class="drawer">
-    <a href="javascript:void(0)" id="drawerNightToggle"><i id="drawerToggleIcon">🌙</i> Night Mode</a>
-    <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-    <a href="https://www.facebook.com/share/1BTtkqEN28/" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-    <a href="https://whatsapp.com/channel/0029VbCbSoPCMY0JBsgwbx2q" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-    <a href="https://www.tiktok.com/@pathanwala1?_r=1&_t=ZS-95GCCZCrHGv"><i class="fab fa-tiktok"></i> TikTok</a>
-    <a href="#" onclick="shareWebsite()"><i class="fas fa-share-alt"></i> Share</a>
-    <a href="javascript:void(0)" id="drawerMusicToggle"><i class="fas fa-music"></i> Music</a>
-    <span class="closebtn" onclick="closeDrawer()">×</span>
-</div>
-
-<!-- Drawer Button -->
-<div style="position:relative; height:100px; width:100%;">
-    <button id="openDrawerBtn" onclick="openDrawer()">☰</button>
-</div>
-
 <h1><span class="rainbow-text">𝗚𝗨𝗟𝗟 𝗞𝗛𝗔𝗡 𝗪𝗘𝗕</span></h1>
 
 <div class="search-container">
@@ -211,24 +124,7 @@ h1{text-align:center;font-size:80px;margin-top:80px;}
 
 <div class="grid" id="movieGrid"></div>
 
-<!-- BACKGROUND MUSIC -->
-<audio id="bgMusic" loop>
-    <source src="https://raw.githubusercontent.com/gullnoor596-svg/Gullkhanwebserver/main/Modern%20Talking%20-%20Cheri%20Cheri%20Lady%20(Lyrics)(720P_HD)(mp3).mp3" type="audio/mpeg">
-</audio>
-
 <script>
-// Drawer
-function openDrawer(){document.getElementById("myDrawer").style.width="300px";}
-function closeDrawer(){document.getElementById("myDrawer").style.width="0";}
-
-// Share
-function shareWebsite(){
-    const url = "https://gullnoor596-svg.github.io/MoviesServer/";
-    if(navigator.share){navigator.share({title:"GULLKHAN WEBSITE",text:"Check this website!",url:url});}
-    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>alert("Link copied!"));}
-    else{prompt("Copy this link:",url);}
-}
-
 // Movies array + Hollywood placeholders
 let movies=[
     {name:"V for Vendetta", img:"https://imgshare.info/images/2025/04/26/V.for.Vendetta.2005..jpg", link1:"https://hub.pizzacdn.buzz/f047ce7a424bb2de20b07e685d6cf3ed?token=1774952598123", link2:"https://pixeldrain.dev/u/XJcPnuBR"},
@@ -299,44 +195,6 @@ document.getElementById("searchInput").addEventListener("input",(e)=>{
     grid.innerHTML="";
     let filtered=movies.filter(m=>m.name.toLowerCase().includes(q));
     loadBatch(filtered);
-});
-
-// Music toggle
-const musicBtn = document.getElementById('drawerMusicToggle');
-const music = document.getElementById('bgMusic');
-let isPlaying = false;
-musicBtn.addEventListener('click', ()=>{
-    if(!isPlaying){music.play().catch(()=>alert("Tap to play audio first")); musicBtn.innerHTML='<i class="fas fa-volume-up"></i> Playing';} 
-    else {music.pause(); musicBtn.innerHTML='<i class="fas fa-music"></i> Music';}
-    isPlaying = !isPlaying;
-});
-
-// Night mode
-const nightBtn = document.getElementById('drawerNightToggle');
-const toggleIcon = document.getElementById('drawerToggleIcon');
-let nightMode = localStorage.getItem('nightMode')==='false'? false : true;
-function applyMode(night){
-    if(!night){
-        document.documentElement.style.setProperty('--bg-color','#fff');
-        document.documentElement.style.setProperty('--text-color','#111');
-        document.documentElement.style.setProperty('--card-bg','rgba(0,0,0,0.05)');
-        document.documentElement.style.setProperty('--highlight-color','#ff00aa');
-        document.documentElement.style.setProperty('--search-bg','#eee');
-        toggleIcon.textContent='☀️';
-    } else {
-        document.documentElement.style.setProperty('--bg-color','#111');
-        document.documentElement.style.setProperty('--text-color','#fff');
-        document.documentElement.style.setProperty('--card-bg','rgba(255,255,255,0.05)');
-        document.documentElement.style.setProperty('--highlight-color','#00ff88');
-        document.documentElement.style.setProperty('--search-bg','#222');
-        toggleIcon.textContent='🌙';
-    }
-    localStorage.setItem('nightMode', night);
-}
-applyMode(nightMode);
-nightBtn.addEventListener('click', ()=>{
-    nightMode = !nightMode;
-    applyMode(nightMode);
 });
 </script>
 </body>
